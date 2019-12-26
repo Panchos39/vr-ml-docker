@@ -1,0 +1,30 @@
+version: '2.3'
+services:
+    jupyter_notebook:
+        build: ./deep_learning/
+        runtime: nvidia
+        ports:
+          - "8888:8888"
+          - "5000:5000"
+        expose:
+            - "8888"
+            - "27017"
+            - "80"
+            - "6379"
+            - "8080"
+            - "5000"
+        volumes:
+            - /home/dxdo-employee/:/home/user/
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            #xhost +local:docker in terminal before using
+        networks:
+          application-network:
+              aliases:
+              - jupyter.compose
+        restart: on-failure
+        environment:
+        - PYTHONUNBUFFERED=0
+        - DISPLAY=unix:1
+networks:
+    application-network:
+        external: false
